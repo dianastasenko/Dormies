@@ -1,31 +1,22 @@
-//loading the express library and creating a router for all the apartmnets routes
-const express=require ('express');
-const router=express.Router();
+// loading the express library and creating a router for all the apartments routes
+const express = require('express');
+const apartmentsController = require('../controllers/apartments');
+const router = express.Router();
 
-// the apartments listed on the dormies site and server, 
-//apartmentId is the connection between the apartment and the listing that lists that apartment
-const apartments=[ 
-    {apartmentId:1,located:'Dorms building A',floor:2,numOfRooms:2, balcony:false, college: 'Tel Aviv-Yaffo Academic College'},
-    {apartmentId:3,located:'Dorms building B',floor:4,numOfRooms:3, balcony:true, college: 'Tel Aviv-Yaffo Academic College'},
-    {apartmentId:5,located:'Dorms building A',floor:3,numOfRooms:2, balcony:false, college: 'Tel Aviv-Yaffo Academic College'},
-];
+// returns all apartments there are
+router.get('/', apartmentsController.getApartments);
 
-//summarizes the data in the apartments
-const summary = {
-    totalApartments: 3,
-    totalApartmentsWithBalcony: 1,
-    totalColleges: 1
-};
-//returns all apartments there are
-router.get ('/',(req,res)=>{
-res.json(apartments)});
+router.get('/summary', apartmentsController.getSummary);
 
-//returns just the summarized numbers 
-router.get('/summary', (req, res) => {
-    res.json(summary);
-});
-//exports the router so app files can use it
-module.exports=router;
+router.get('/search', apartmentsController.getfilterApartments);
 
+// placeholders for future operations
+router.get('/add', apartmentsController.addApartments);
+router.get('/update', apartmentsController.updateApartments);
+router.get('/delete', apartmentsController.deleteApartments);
 
+// returns a specific apartment by its ID (MUST be at the bottom)
+router.get('/:apartmentId', apartmentsController.getApartmentById);
 
+// exports the router so app files can use it
+module.exports = router;
